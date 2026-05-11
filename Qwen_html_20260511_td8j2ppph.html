@@ -1,0 +1,2014 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#050510">
+  <title>Un Poco de Ruido — Invitación Premium</title>
+  
+  <!-- ============================================
+       PLACEHOLDERS - Reemplazar con tus assets
+       ============================================
+       <link rel="icon" href="assets/favicon.png">
+       <meta property="og:image" content="assets/og-cover.jpg">
+  ============================================ -->
+
+  <style>
+    /* ═══════════════════════════════════════════
+       VARIABLES GLOBALES - Cambiá temática aquí
+       ═══════════════════════════════════════════ */
+    :root {
+      --color-bg: #050510;
+      --color-bg-alt: #0a0a1a;
+      --color-black: #000000;
+      --color-blue-electric: #0066ff;
+      --color-blue-neon: #00d4ff;
+      --color-violet: #8b00ff;
+      --color-violet-light: #b44aff;
+      --color-cyan: #00f5d4;
+      --color-fuchsia: #ff00ff;
+      --color-fuchsia-light: #ff44ff;
+      --color-pink: #ff2d95;
+      --color-white: #ffffff;
+      --color-gray: #8888aa;
+      --color-gold: #ffd700;
+      
+      --font-main: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      --font-display: 'Arial Black', 'Impact', sans-serif;
+      --font-mono: 'Courier New', monospace;
+      
+      --glow-blue: 0 0 20px #0066ff, 0 0 40px #00d4ff44;
+      --glow-fuchsia: 0 0 20px #ff00ff, 0 0 40px #ff00ff44;
+      --glow-cyan: 0 0 20px #00f5d4, 0 0 40px #00f5d444;
+      --glow-violet: 0 0 20px #8b00ff, 0 0 40px #8b00ff44;
+      
+      --blur-glass: blur(20px) saturate(180%);
+      --transition-smooth: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    /* ═══════════════════════════════════════════
+       RESET & BASE
+       ═══════════════════════════════════════════ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: var(--font-main);
+      background: var(--color-bg);
+      color: var(--color-white);
+      overflow-x: hidden;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Scrollbar custom */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--color-bg); }
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, var(--color-fuchsia), var(--color-blue-electric));
+      border-radius: 3px;
+    }
+
+    /* ═══════════════════════════════════════════
+       UTILIDADES
+       ═══════════════════════════════════════════ */
+    .sr-only {
+      position: absolute; width: 1px; height: 1px;
+      padding: 0; margin: -1px; overflow: hidden;
+      clip: rect(0,0,0,0); border: 0;
+    }
+
+    .text-gradient {
+      background: linear-gradient(135deg, var(--color-cyan), var(--color-blue-electric), var(--color-fuchsia));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .text-neon {
+      text-shadow: var(--glow-cyan);
+      color: var(--color-cyan);
+    }
+
+    .text-neon-fuchsia {
+      text-shadow: var(--glow-fuchsia);
+      color: var(--color-fuchsia);
+    }
+
+    /* ═══════════════════════════════════════════
+       PARTÍCULAS & HUMO
+       ═══════════════════════════════════════════ */
+    #particles-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .smoke-container {
+      position: fixed;
+      bottom: 0; left: 0;
+      width: 100%; height: 40%;
+      z-index: 2;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .smoke {
+      position: absolute;
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(139,0,255,0.08) 0%, transparent 70%);
+      border-radius: 50%;
+      animation: smokeFloat 8s ease-in-out infinite;
+    }
+
+    .smoke:nth-child(1) { left: 10%; animation-delay: 0s; width: 300px; height: 300px; }
+    .smoke:nth-child(2) { left: 40%; animation-delay: 2s; width: 250px; height: 250px; }
+    .smoke:nth-child(3) { left: 70%; animation-delay: 4s; width: 350px; height: 350px; }
+    .smoke:nth-child(4) { left: 25%; animation-delay: 1s; width: 200px; height: 200px; }
+    .smoke:nth-child(5) { left: 55%; animation-delay: 3s; width: 280px; height: 280px; }
+
+    @keyframes smokeFloat {
+      0%, 100% { transform: translateY(0) scale(1); opacity: 0.3; }
+      50% { transform: translateY(-80px) scale(1.3); opacity: 0.15; }
+    }
+
+    /* ═══════════════════════════════════════════
+       PORTADA FULLSCREEN
+       ═══════════════════════════════════════════ */
+    .cover-screen {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100vh;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: var(--color-bg);
+      overflow: hidden;
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .cover-screen.hidden {
+      opacity: 0;
+      transform: scale(1.1);
+      pointer-events: none;
+    }
+
+    .cover-bg {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(0,102,255,0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 50%, rgba(255,0,255,0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 80%, rgba(0,245,212,0.1) 0%, transparent 50%);
+      animation: bgPulse 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes bgPulse {
+      0% { opacity: 0.6; }
+      100% { opacity: 1; }
+    }
+
+    /* Flash effect */
+    .flash-overlay {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: white;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .flash-overlay.active {
+      animation: flashBang 0.3s ease-out;
+    }
+
+    @keyframes flashBang {
+      0% { opacity: 0.8; }
+      100% { opacity: 0; }
+    }
+
+    .cover-content {
+      position: relative;
+      z-index: 5;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .cover-logo {
+      width: 120px; height: 120px;
+      margin: 0 auto 20px;
+      border-radius: 50%;
+      border: 3px solid var(--color-fuchsia);
+      box-shadow: var(--glow-fuchsia);
+      animation: logoPulse 2s ease-in-out infinite;
+      /* PLACEHOLDER: Reemplazar con tu logo */
+      /* background: url('assets/logo.png') center/cover; */
+      background: linear-gradient(135deg, var(--color-violet), var(--color-blue-electric));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+    }
+
+    @keyframes logoPulse {
+      0%, 100% { box-shadow: var(--glow-fuchsia); transform: scale(1); }
+      50% { box-shadow: 0 0 40px #ff00ff, 0 0 80px #ff00ff66; transform: scale(1.05); }
+    }
+
+    .cover-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 8vw, 5rem);
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      margin-bottom: 10px;
+      animation: titleGlow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes titleGlow {
+      0% { text-shadow: 0 0 10px var(--color-cyan), 0 0 30px var(--color-blue-electric); }
+      100% { text-shadow: 0 0 20px var(--color-fuchsia), 0 0 60px var(--color-violet); }
+    }
+
+    .cover-subtitle {
+      font-size: clamp(1rem, 3vw, 1.5rem);
+      color: var(--color-gray);
+      letter-spacing: 8px;
+      text-transform: uppercase;
+      margin-bottom: 30px;
+    }
+
+    /* Ecualizador animado en portada */
+    .equalizer {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 4px;
+      height: 60px;
+      margin: 30px 0;
+    }
+
+    .eq-bar {
+      width: 6px;
+      border-radius: 3px;
+      animation: eqBounce var(--speed, 0.8s) ease-in-out infinite alternate;
+      transform-origin: bottom;
+    }
+
+    @keyframes eqBounce {
+      0% { transform: scaleY(0.2); }
+      100% { transform: scaleY(var(--scale, 1)); }
+    }
+
+    .cover-enter-btn {
+      margin-top: 40px;
+      padding: 16px 48px;
+      font-size: 1.1rem;
+      font-family: var(--font-display);
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: var(--color-white);
+      background: linear-gradient(135deg, var(--color-fuchsia), var(--color-violet));
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: var(--transition-smooth);
+      box-shadow: var(--glow-fuchsia);
+      animation: btnPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes btnPulse {
+      0%, 100% { box-shadow: 0 0 20px #ff00ff88; }
+      50% { box-shadow: 0 0 40px #ff00ff, 0 0 80px #ff00ff44; }
+    }
+
+    .cover-enter-btn::before {
+      content: '';
+      position: absolute;
+      top: -50%; left: -50%;
+      width: 200%; height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+      transform: rotate(45deg);
+      animation: btnShine 3s linear infinite;
+    }
+
+    @keyframes btnShine {
+      0% { transform: translateX(-100%) rotate(45deg); }
+      100% { transform: translateX(100%) rotate(45deg); }
+    }
+
+    .cover-enter-btn:hover {
+      transform: scale(1.05);
+    }
+
+    /* ═══════════════════════════════════════════
+       AUDIO VISUALIZER
+       ═══════════════════════════════════════════ */
+    .audio-visualizer {
+      position: fixed;
+      bottom: 0; left: 0;
+      width: 100%;
+      height: 4px;
+      z-index: 900;
+      display: flex;
+      gap: 2px;
+      opacity: 0.8;
+    }
+
+    .vis-bar {
+      flex: 1;
+      background: linear-gradient(to top, var(--color-fuchsia), var(--color-cyan));
+      border-radius: 2px;
+      transform-origin: bottom;
+      will-change: transform;
+    }
+
+    /* Music toggle */
+    .music-toggle {
+      position: fixed;
+      bottom: 20px; right: 20px;
+      width: 50px; height: 50px;
+      border-radius: 50%;
+      background: rgba(139,0,255,0.3);
+      backdrop-filter: var(--blur-glass);
+      -webkit-backdrop-filter: var(--blur-glass);
+      border: 2px solid var(--color-violet);
+      color: var(--color-white);
+      font-size: 20px;
+      cursor: pointer;
+      z-index: 901;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition-smooth);
+      box-shadow: var(--glow-violet);
+    }
+
+    .music-toggle:hover { transform: scale(1.1); }
+    .music-toggle.playing { animation: musicRotate 3s linear infinite; }
+
+    @keyframes musicRotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* PLACEHOLDER para audio:
+       <audio id="bg-music" loop>
+         <source src="assets/background-music.mp3" type="audio/mpeg">
+       </audio>
+    -->
+
+    /* ═══════════════════════════════════════════
+       LAYOUT PRINCIPAL
+       ═══════════════════════════════════════════ */
+    .main-content {
+      position: relative;
+      z-index: 10;
+      opacity: 0;
+      transition: opacity 0.6s ease 0.3s;
+    }
+
+    .main-content.visible {
+      opacity: 1;
+    }
+
+    section {
+      padding: 60px 20px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 5vw, 2.5rem);
+      text-align: center;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      letter-spacing: 2px;
+    }
+
+    .section-divider {
+      width: 80px; height: 3px;
+      background: linear-gradient(90deg, var(--color-fuchsia), var(--color-cyan));
+      margin: 0 auto 30px;
+      border-radius: 2px;
+      box-shadow: var(--glow-fuchsia);
+    }
+
+    /* ═══════════════════════════════════════════
+       GLASS CARD
+       ═══════════════════════════════════════════ */
+    .glass-card {
+      background: rgba(10, 10, 30, 0.6);
+      backdrop-filter: var(--blur-glass);
+      -webkit-backdrop-filter: var(--blur-glass);
+      border: 1px solid rgba(139,0,255,0.2);
+      border-radius: 20px;
+      padding: 30px;
+      margin: 20px 0;
+      position: relative;
+      overflow: hidden;
+      transition: var(--transition-smooth);
+    }
+
+    .glass-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -50%;
+      width: 200%; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--color-cyan), transparent);
+    }
+
+    .glass-card:hover {
+      border-color: rgba(255,0,255,0.4);
+      box-shadow: 0 8px 32px rgba(139,0,255,0.15);
+      transform: translateY(-2px);
+    }
+
+    /* ═══════════════════════════════════════════
+       HERO SECTION
+       ═══════════════════════════════════════════ */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 80px 20px;
+      position: relative;
+    }
+
+    .hero-image-placeholder {
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      border: 4px solid transparent;
+      background-image: linear-gradient(var(--color-bg), var(--color-bg)),
+                         linear-gradient(135deg, var(--color-fuchsia), var(--color-cyan));
+      background-origin: border-box;
+      background-clip: padding-box, border-box;
+      margin-bottom: 30px;
+      /* PLACEHOLDER: Imagen principal del evento */
+      /* background: url('assets/hero-image.jpg') center/cover; */
+      background: linear-gradient(135deg, #1a1a3e, #0a0a2a);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 60px;
+      box-shadow: 0 0 30px rgba(139,0,255,0.3);
+      animation: heroFloat 6s ease-in-out infinite;
+    }
+
+    @keyframes heroFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+
+    .hero-name {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 8vw, 4.5rem);
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      margin-bottom: 10px;
+    }
+
+    .hero-date {
+      font-size: clamp(1.2rem, 4vw, 1.8rem);
+      color: var(--color-cyan);
+      text-shadow: var(--glow-cyan);
+      margin-bottom: 5px;
+    }
+
+    .hero-venue {
+      font-size: 1rem;
+      color: var(--color-gray);
+      letter-spacing: 2px;
+    }
+
+    .hero-description {
+      margin-top: 20px;
+      font-size: 1.05rem;
+      color: rgba(255,255,255,0.8);
+      max-width: 500px;
+      line-height: 1.7;
+    }
+
+    /* ═══════════════════════════════════════════
+       COUNTDOWN
+       ═══════════════════════════════════════════ */
+    .countdown-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .countdown-item {
+      background: rgba(139,0,255,0.1);
+      border: 1px solid rgba(139,0,255,0.3);
+      border-radius: 15px;
+      padding: 15px 8px;
+      text-align: center;
+      transition: var(--transition-smooth);
+    }
+
+    .countdown-item:hover {
+      border-color: var(--color-fuchsia);
+      box-shadow: var(--glow-fuchsia);
+      transform: scale(1.05);
+    }
+
+    .countdown-number {
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 5vw, 2.5rem);
+      display: block;
+      color: var(--color-cyan);
+      text-shadow: var(--glow-cyan);
+    }
+
+    .countdown-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--color-gray);
+      margin-top: 4px;
+    }
+
+    /* ═══════════════════════════════════════════
+       LOCATION
+       ═══════════════════════════════════════════ */
+    .map-container {
+      width: 100%;
+      height: 300px;
+      border-radius: 15px;
+      overflow: hidden;
+      border: 2px solid rgba(139,0,255,0.3);
+      margin-top: 15px;
+      position: relative;
+      background: var(--color-bg-alt);
+    }
+
+    .map-container iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      filter: saturate(1.3) brightness(0.8) contrast(1.1);
+    }
+
+    .location-info {
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    .location-name {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .location-address {
+      color: var(--color-gray);
+      font-size: 0.9rem;
+    }
+
+    .btn-maps {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 15px;
+      padding: 12px 28px;
+      background: linear-gradient(135deg, var(--color-blue-electric), var(--color-violet));
+      color: white;
+      text-decoration: none;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: var(--transition-smooth);
+      box-shadow: var(--glow-blue);
+    }
+
+    .btn-maps:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 30px rgba(0,102,255,0.5);
+    }
+
+    /* ═══════════════════════════════════════════
+       RSVP / CONFIRMACIÓN
+       ═══════════════════════════════════════════ */
+    .rsvp-form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    .form-group {
+      position: relative;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 14px 18px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(139,0,255,0.3);
+      border-radius: 12px;
+      color: var(--color-white);
+      font-size: 1rem;
+      font-family: var(--font-main);
+      transition: var(--transition-smooth);
+      outline: none;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--color-cyan);
+      box-shadow: var(--glow-cyan);
+      background: rgba(255,255,255,0.08);
+    }
+
+    .form-group input::placeholder {
+      color: var(--color-gray);
+    }
+
+    .form-group select option {
+      background: var(--color-bg);
+    }
+
+    .btn-submit {
+      padding: 16px 32px;
+      background: linear-gradient(135deg, var(--color-fuchsia), var(--color-violet));
+      border: none;
+      border-radius: 50px;
+      color: white;
+      font-size: 1.1rem;
+      font-family: var(--font-display);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+      box-shadow: var(--glow-fuchsia);
+    }
+
+    .btn-submit:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 40px rgba(255,0,255,0.5);
+    }
+
+    .btn-submit:active {
+      transform: scale(0.98);
+    }
+
+    .rsvp-success {
+      display: none;
+      text-align: center;
+      padding: 30px;
+    }
+
+    .rsvp-success.show {
+      display: block;
+      animation: fadeInUp 0.5s ease;
+    }
+
+    .rsvp-success .check-icon {
+      font-size: 60px;
+      display: block;
+      margin-bottom: 15px;
+    }
+
+    /* ═══════════════════════════════════════════
+       PLAYLIST
+       ═══════════════════════════════════════════ */
+    .playlist-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .playlist-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 12px 16px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+    }
+
+    .playlist-item:hover {
+      background: rgba(139,0,255,0.1);
+      border-color: rgba(139,0,255,0.3);
+      transform: translateX(5px);
+    }
+
+    .playlist-item.active {
+      background: rgba(255,0,255,0.1);
+      border-color: var(--color-fuchsia);
+    }
+
+    .playlist-thumb {
+      width: 48px; height: 48px;
+      border-radius: 10px;
+      /* PLACEHOLDER: Portada de cada canción */
+      background: linear-gradient(135deg, var(--color-violet), var(--color-blue-electric));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .playlist-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .playlist-song {
+      font-weight: 600;
+      font-size: 0.95rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .playlist-artist {
+      font-size: 0.8rem;
+      color: var(--color-gray);
+    }
+
+    .playlist-play {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: var(--transition-smooth);
+    }
+
+    .playlist-item:hover .playlist-play {
+      background: var(--color-fuchsia);
+    }
+
+    /* ═══════════════════════════════════════════
+       TRIVIA CUMBIA
+       ═══════════════════════════════════════════ */
+    .trivia-section {
+      padding-bottom: 100px;
+    }
+
+    .trivia-card {
+      background: rgba(10, 10, 30, 0.8);
+      backdrop-filter: var(--blur-glass);
+      -webkit-backdrop-filter: var(--blur-glass);
+      border: 1px solid rgba(139,0,255,0.3);
+      border-radius: 24px;
+      padding: 30px 20px;
+      max-width: 600px;
+      margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .trivia-card::before {
+      content: '';
+      position: absolute;
+      top: -2px; left: -2px; right: -2px; bottom: -2px;
+      background: linear-gradient(135deg, var(--color-fuchsia), var(--color-cyan), var(--color-violet), var(--color-fuchsia));
+      border-radius: 25px;
+      z-index: -1;
+      opacity: 0.3;
+      animation: borderRotate 4s linear infinite;
+    }
+
+    @keyframes borderRotate {
+      0% { filter: hue-rotate(0deg); }
+      100% { filter: hue-rotate(360deg); }
+    }
+
+    .trivia-progress {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 20px;
+    }
+
+    .trivia-dot {
+      flex: 1;
+      height: 4px;
+      border-radius: 2px;
+      background: rgba(255,255,255,0.1);
+      transition: var(--transition-smooth);
+    }
+
+    .trivia-dot.completed { background: var(--color-cyan); }
+    .trivia-dot.current { background: var(--color-fuchsia); animation: dotPulse 1s ease infinite; }
+    .trivia-dot.correct { background: #00ff88; }
+    .trivia-dot.wrong { background: #ff4444; }
+
+    @keyframes dotPulse {
+      0%, 100% { box-shadow: 0 0 5px var(--color-fuchsia); }
+      50% { box-shadow: 0 0 15px var(--color-fuchsia); }
+    }
+
+    .trivia-question-counter {
+      font-size: 0.85rem;
+      color: var(--color-gray);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+    }
+
+    .trivia-score-display {
+      text-align: right;
+      font-size: 0.9rem;
+      color: var(--color-cyan);
+      margin-bottom: 15px;
+      text-shadow: var(--glow-cyan);
+    }
+
+    .trivia-question {
+      font-size: clamp(1.1rem, 4vw, 1.3rem);
+      font-weight: 600;
+      margin-bottom: 25px;
+      line-height: 1.5;
+      min-height: 60px;
+    }
+
+    .trivia-options {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .trivia-option {
+      padding: 14px 18px;
+      background: rgba(255,255,255,0.05);
+      border: 2px solid rgba(255,255,255,0.1);
+      border-radius: 14px;
+      color: var(--color-white);
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+      text-align: left;
+      font-family: var(--font-main);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .trivia-option::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: linear-gradient(135deg, transparent, rgba(255,255,255,0.03));
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .trivia-option:hover::before { opacity: 1; }
+
+    .trivia-option:hover {
+      border-color: var(--color-cyan);
+      transform: translateX(5px);
+    }
+
+    .trivia-option:active { transform: scale(0.98); }
+
+    .trivia-option.correct {
+      border-color: #00ff88;
+      background: rgba(0,255,136,0.15);
+      animation: correctPop 0.4s ease;
+    }
+
+    @keyframes correctPop {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+      100% { transform: scale(1); }
+    }
+
+    .trivia-option.wrong {
+      border-color: #ff4444;
+      background: rgba(255,68,68,0.15);
+      animation: wrongShake 0.5s ease;
+    }
+
+    @keyframes wrongShake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-8px); }
+      40% { transform: translateX(8px); }
+      60% { transform: translateX(-5px); }
+      80% { transform: translateX(5px); }
+    }
+
+    .trivia-option.disabled {
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    .trivia-next-btn {
+      display: none;
+      margin: 20px auto 0;
+      padding: 12px 36px;
+      background: linear-gradient(135deg, var(--color-cyan), var(--color-blue-electric));
+      border: none;
+      border-radius: 50px;
+      color: var(--color-bg);
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .trivia-next-btn.show { display: block; animation: fadeInUp 0.4s ease; }
+
+    /* Results screen */
+    .trivia-results {
+      display: none;
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    .trivia-results.show { display: block; animation: fadeInUp 0.6s ease; }
+
+    .results-score {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 10vw, 5rem);
+      margin: 20px 0 10px;
+    }
+
+    .results-message {
+      font-size: 1.2rem;
+      color: var(--color-gray);
+      margin-bottom: 25px;
+    }
+
+    .trivia-replay-btn {
+      padding: 14px 40px;
+      background: linear-gradient(135deg, var(--color-fuchsia), var(--color-violet));
+      border: none;
+      border-radius: 50px;
+      color: white;
+      font-size: 1rem;
+      font-family: var(--font-display);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+      box-shadow: var(--glow-fuchsia);
+    }
+
+    .trivia-replay-btn:hover { transform: scale(1.05); }
+
+    /* Confetti canvas */
+    #confetti-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 9998;
+      pointer-events: none;
+    }
+
+    /* ═══════════════════════════════════════════
+       FOOTER
+       ═══════════════════════════════════════════ */
+    footer {
+      text-align: center;
+      padding: 40px 20px 80px;
+      color: var(--color-gray);
+      font-size: 0.85rem;
+    }
+
+    footer a {
+      color: var(--color-fuchsia);
+      text-decoration: none;
+    }
+
+    /* ═══════════════════════════════════════════
+       ANIMACIONES GENERALES
+       ═══════════════════════════════════════════ */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .animate-on-scroll {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .animate-on-scroll.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ═══════════════════════════════════════════
+       RESPONSIVE
+       ═══════════════════════════════════════════ */
+    @media (min-width: 480px) {
+      .playlist-grid { grid-template-columns: 1fr 1fr; }
+      .trivia-options { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (min-width: 768px) {
+      section { padding: 80px 30px; }
+      .trivia-card { padding: 40px 30px; }
+      .countdown-item { padding: 20px 10px; }
+    }
+
+    @media (min-width: 1024px) {
+      section { padding: 100px 40px; }
+    }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════
+       CANVAS DE PARTÍCULAS
+       ═══════════════════════════════════════════ -->
+  <canvas id="particles-canvas"></canvas>
+
+  <!-- Humo decorativo -->
+  <div class="smoke-container" aria-hidden="true">
+    <div class="smoke"></div>
+    <div class="smoke"></div>
+    <div class="smoke"></div>
+    <div class="smoke"></div>
+    <div class="smoke"></div>
+  </div>
+
+  <!-- Confetti -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <!-- ═══════════════════════════════════════════
+       PORTADA FULLSCREEN
+       ═══════════════════════════════════════════ -->
+  <div class="cover-screen" id="coverScreen">
+    <div class="cover-bg"></div>
+    <div class="flash-overlay" id="flashOverlay"></div>
+
+    <div class="cover-content">
+      <!-- PLACEHOLDER: Logo del evento -->
+      <!-- <img src="assets/logo.png" alt="Logo" class="cover-logo"> -->
+      <div class="cover-logo" aria-label="Logo">🎵</div>
+
+      <h1 class="cover-title text-gradient">Un Poco<br>de Ruido</h1>
+      <p class="cover-subtitle text-neon-fuchsia">La Fiesta</p>
+
+      <!-- Ecualizador animado -->
+      <div class="equalizer" id="coverEqualizer" aria-hidden="true"></div>
+
+      <button class="cover-enter-btn" id="enterBtn" aria-label="Entrar a la invitación">
+        🔊 Entrar a la Fiesta
+      </button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       AUDIO VISUALIZER & MUSIC TOGGLE
+       ═══════════════════════════════════════════ -->
+  <div class="audio-visualizer" id="audioVisualizer" aria-hidden="true"></div>
+
+  <!-- PLACEHOLDER: Audio de fondo
+  <audio id="bgMusic" loop preload="auto">
+    <source src="assets/background-music.mp3" type="audio/mpeg">
+    <source src="assets/background-music.ogg" type="audio/ogg">
+  </audio>
+  -->
+  <button class="music-toggle" id="musicToggle" aria-label="Toggle música" title="Música">🔇</button>
+
+  <!-- ═══════════════════════════════════════════
+       CONTENIDO PRINCIPAL
+       ═══════════════════════════════════════════ -->
+  <main class="main-content" id="mainContent">
+
+    <!-- HERO -->
+    <section class="hero" id="heroSection">
+      <!-- PLACEHOLDER: Imagen principal del evento -->
+      <!-- <img src="assets/hero-image.jpg" alt="Evento" class="hero-image-placeholder"> -->
+      <div class="hero-image-placeholder" aria-label="Imagen del evento">🎤</div>
+
+      <h2 class="hero-name text-gradient">Un Poco de Ruido</h2>
+      <p class="hero-date text-neon">Sábado 15 de Agosto, 2026</p>
+      <p class="hero-venue">📍 Club Social & Cultural — Buenos Aires</p>
+
+      <p class="hero-description">
+        Una noche de cumbia, streaming y puro ruido. Preparate para la experiencia 
+        más intensa del año. Luces, sonido y la mejor música argentina en vivo.
+      </p>
+    </section>
+
+    <!-- COUNTDOWN -->
+    <section id="countdownSection" class="animate-on-scroll">
+      <h3 class="section-title text-gradient">Countdown</h3>
+      <div class="section-divider"></div>
+
+      <div class="countdown-grid">
+        <div class="countdown-item">
+          <span class="countdown-number" id="cd-days">00</span>
+          <span class="countdown-label">Días</span>
+        </div>
+        <div class="countdown-item">
+          <span class="countdown-number" id="cd-hours">00</span>
+          <span class="countdown-label">Horas</span>
+        </div>
+        <div class="countdown-item">
+          <span class="countdown-number" id="cd-minutes">00</span>
+          <span class="countdown-label">Min</span>
+        </div>
+        <div class="countdown-item">
+          <span class="countdown-number" id="cd-seconds">00</span>
+          <span class="countdown-label">Seg</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- LOCATION -->
+    <section id="locationSection" class="animate-on-scroll">
+      <h3 class="section-title text-gradient">Ubicación</h3>
+      <div class="section-divider"></div>
+
+      <div class="glass-card">
+        <div class="location-info">
+          <p class="location-name">🏟️ Club Social & Cultural</p>
+          <p class="location-address">Av. Corrientes 1234, CABA, Buenos Aires</p>
+          <p class="location-address" style="margin-top:5px;">Puertas: 22:00 hs | After: hasta las 06:00 hs</p>
+        </div>
+
+        <div class="map-container">
+          <!-- PLACEHOLDER: Reemplazar con tu embed de Google Maps -->
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3284.016913265957!2d-58.38414532429858!3d-34.60373887295407!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bccacb4e0f0001%3A0x5c8b0b3e2e7e7e7e!2sAv.%20Corrientes%2C%20Buenos%20Aires!5e0!3m2!1ses!2sar!4v1700000000000!5m2!1ses!2sar"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Ubicación del evento">
+          </iframe>
+        </div>
+
+        <!-- PLACEHOLDER: Cambiar coordenadas por las reales -->
+        <a href="https://maps.google.com/?q=-34.6037,-58.3841" target="_blank" rel="noopener" class="btn-maps">
+          📍 Abrir en Google Maps
+        </a>
+      </div>
+    </section>
+
+    <!-- RSVP -->
+    <section id="rsvpSection" class="animate-on-scroll">
+      <h3 class="section-title text-gradient">Confirmá tu Asistencia</h3>
+      <div class="section-divider"></div>
+
+      <div class="glass-card">
+        <form class="rsvp-form" id="rsvpForm">
+          <div class="form-group">
+            <input type="text" placeholder="Tu nombre completo" required aria-label="Nombre completo">
+          </div>
+          <div class="form-group">
+            <input type="tel" placeholder="Tu celular (WhatsApp)" required aria-label="Celular">
+          </div>
+          <div class="form-group">
+            <select required aria-label="Cantidad de personas">
+              <option value="" disabled selected>¿Cuántos van?</option>
+              <option value="1">1 persona</option>
+              <option value="2">2 personas</option>
+              <option value="3">3 personas</option>
+              <option value="4">4 personas</option>
+              <option value="5+">5 o más</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <textarea rows="2" placeholder="Mensaje opcional..." aria-label="Mensaje"></textarea>
+          </div>
+          <button type="submit" class="btn-submit">🎉 Confirmar Asistencia</button>
+        </form>
+
+        <div class="rsvp-success" id="rsvpSuccess">
+          <span class="check-icon">✅</span>
+          <h4 style="font-size:1.3rem; margin-bottom:10px;">¡Estás adentro!</h4>
+          <p style="color:var(--color-gray);">Te confirmamos por WhatsApp. ¡Preparate para el ruido!</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PLAYLIST -->
+    <section id="playlistSection" class="animate-on-scroll">
+      <h3 class="section-title text-gradient">Playlist del Evento</h3>
+      <div class="section-divider"></div>
+
+      <div class="glass-card">
+        <div class="playlist-grid" id="playlistGrid">
+          <!-- Generado por JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- TRIVIA -->
+    <section id="triviaSection" class="animate-on-scroll trivia-section">
+      <h3 class="section-title text-gradient">Trivia Cumbiera</h3>
+      <div class="section-divider"></div>
+
+      <div class="trivia-card" id="triviaCard">
+        <!-- Progress dots -->
+        <div class="trivia-progress" id="triviaProgress"></div>
+        <div class="trivia-score-display" id="triviaScore">Puntos: 0</div>
+
+        <!-- Question area -->
+        <div id="triviaGame">
+          <p class="trivia-question-counter" id="triviaCounter">Pregunta 1 de 5</p>
+          <p class="trivia-question" id="triviaQuestion">Cargando pregunta...</p>
+          <div class="trivia-options" id="triviaOptions"></div>
+          <button class="trivia-next-btn" id="triviaNextBtn">Siguiente ➜</button>
+        </div>
+
+        <!-- Results area -->
+        <div class="trivia-results" id="triviaResults">
+          <div style="font-size:60px;">🏆</div>
+          <div class="results-score text-gradient" id="resultsScore">0/5</div>
+          <p class="results-message" id="resultsMessage">¡Buen intento!</p>
+          <button class="trivia-replay-btn" id="triviaReplayBtn">🔄 Jugar de Nuevo</button>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p>Hecho con 💜 y mucho <span style="color:var(--color-fuchsia);">ruido</span></p>
+      <p style="margin-top:8px;">© 2026 — Un Poco de Ruido</p>
+    </footer>
+
+  </main>
+
+  <script>
+    /* ═══════════════════════════════════════════════════════════
+       TRIVIA: 40+ PREGUNTAS DE CUMBIA ARGENTINA
+       ═══════════════════════════════════════════════════════════ */
+    const CUMBIA_TRIVIA = [
+      {
+        q: "¿Cómo se llama el líder de Damas Gratis?",
+        options: ["Pablo Lescano", "Toby Lescano", "Martín Lescano", "Diego Lescano"],
+        correct: 0
+      },
+      {
+        q: "¿Qué canción de Damas Gratis se hizo viral con la frase 'pibes chorros'?",
+        options: ["Pibe Callejero", "Pibes Chorros", "Chorrito de Amor", "La Calle"],
+        correct: 0
+      },
+      {
+        q: "¿De qué zona de Buenos Aires es originaria la cumbia villera?",
+        options: ["Palermo", "Conurbano bonaerense", "Recoleta", "Belgrano"],
+        correct: 1
+      },
+      {
+        q: "¿Qué banda cantó 'Muchachos, ahora nos volvimos a ilusionar' antes de que sea de Argentina?",
+        options: ["La Mona Jiménez", "Los Fabulosos Cadillacs", "La Mosca", "Rodrigo Bueno"],
+        correct: 0
+      },
+      {
+        q: "¿Cuál es el apodo de Rodrigo Bueno?",
+        options: ["El Potro", "El Gallo", "El Puma", "El León"],
+        correct: 0
+      },
+      {
+        q: "¿Qué canción de Gilda es considerada un himno de la cumbia argentina?",
+        options: ["Fuiste", "Como la Flor", "Miénteme", "Corazón Valiente"],
+        correct: 1
+      },
+      {
+        q: "¿Qué frase viralizó Pablo Lescano en un tema?",
+        options: ["Esto es cumbia papá", "Dale que va", "Araca la cana", "Y dale alegría"],
+        correct: 0
+      },
+      {
+        q: "¿Qué banda de cumbia santafesina es conocida por 'El Aguijón'?",
+        options: ["Ráfaga", "Los Palmeras", "Grupo Alegría", "Los del Fuego"],
+        correct: 2
+      },
+      {
+        q: "¿En qué década explotó la cumbia villera en Argentina?",
+        options: ["1980s", "1990s", "Principios de los 2000s", "2010s"],
+        correct: 2
+      },
+      {
+        q: "¿Qué banda cantó 'Te quiero para mí'?",
+        options: ["Agapito Molinari", "Ráfaga", "Los Ángeles Azules", "Damas Gratis"],
+        correct: 1
+      },
+      {
+        q: "¿Cuál es el nombre real de la cantante Gilda?",
+        options: ["Gilda Rosa", "Mirta Mabel", "María Laura", "Claudia Marcela"],
+        correct: 1
+      },
+      {
+        q: "¿Qué canción de La Mona Jiménez tiene más de 100 millones de reproducciones?",
+        options: ["Muchachos", "Corazón de Papel", "La Balada", "Te Vas"],
+        correct: 0
+      },
+      {
+        q: "¿De qué país son Los Ángeles Azules?",
+        options: ["Argentina", "Colombia", "México", "Perú"],
+        correct: 2
+      },
+      {
+        q: "¿Qué significa 'cumbia villera'?",
+        options: ["Cumbia de campo", "Cumbia de los barrios populares", "Cumbia de fiesta", "Cumbia antigua"],
+        correct: 1
+      },
+      {
+        q: "¿Qué artista de cumbia falleció trágicamente en 2000?",
+        options: ["Gilda", "Rodrigo Bueno", "Damas Gratis", "La Mona"],
+        correct: 1
+      },
+      {
+        q: "¿En qué año falleció Gilda en un accidente automovilístico?",
+        options: ["1994", "1996", "1998", "2000"],
+        correct: 1
+      },
+      {
+        q: "¿Qué banda de cumbia es conocida por 'Por encima'?",
+        options: ["Piola Vago", "Ráfaga", "Flor de Piedra", "Los Totora"],
+        correct: 0
+      },
+      {
+        q: "¿Qué canción dice 'Yo soy de los que no olvidan nunca'?",
+        options: ["No me arrepiento", "El Amante", "La Plata", "Te Vas"],
+        correct: 0
+      },
+      {
+        q: "¿Cuál es el género musical que mezcla cumbia con rap en Argentina?",
+        options: ["Cumbia rap", "Cumbia villera", "Trap cumbiero", "Cumbia pop"],
+        correct: 1
+      },
+      {
+        q: "¿Qué DJ/productor es conocido por remixar cumbia villera en la escena electrónica?",
+        options: ["Bizarrap", "DJ Dero", "Tato Quiroz", "King Cumbia"],
+        correct: 0
+      },
+      {
+        q: "¿Qué canción de Damas Gratis habla sobre un pibe que vive en la calle?",
+        options: ["Pibe Callejero", "La Vida es un Carnaval", "Chorrito", "El Pibe"],
+        correct: 0
+      },
+      {
+        q: "¿Qué banda tocó en el festival 'Quilmes Rock' representando la cumbia?",
+        options: ["Damas Gratis", "Ráfaga", "Los Palmeras", "Todas son correctas"],
+        correct: 3
+      },
+      {
+        q: "¿Qué frase dice 'y dale alegría a mi corazón'?",
+        options: ["Es de Ráfaga", "Es de Los Fabulosos Cadillacs", "Es de Damas Gratis", "Es de La Mona"],
+        correct: 1
+      },
+      {
+        q: "¿Cuál es la cumbia más sonada de Los Totora?",
+        options: ["El Bombón Asesino", "La Cumbia del Sol", "Mueve la Colita", "Todo se Transformó"],
+        correct: 0
+      },
+      {
+        q: "¿Qué significa 'agite' en la cultura cumbiera?",
+        options: ["Un tipo de baile", "Movimiento/energía", "Una canción", "Un instrumento"],
+        correct: 1
+      },
+      {
+        q: "¿Qué artista dijo 'Yo no soy un cantor, soy un pueblo'?",
+        options: ["Pablo Lescano", "La Mona Jiménez", "Rodrigo Bueno", "Tite Curet Alonso"],
+        correct: 1
+      },
+      {
+        q: "¿Qué banda de cumbia peruana es muy popular en Argentina?",
+        options: ["Grupo 5", "Los Shapis", "Néctar", "Todas son correctas"],
+        correct: 3
+      },
+      {
+        q: "¿Qué instrumento es fundamental en la cumbia argentina?",
+        options: ["Güiro", "Acordeón", "Teclado electrónico", "Todos los anteriores"],
+        correct: 3
+      },
+      {
+        q: "¿Qué canción de Ráfaga es un himno de los hinchas?",
+        options: ["Te Vas", "Mi Amada", "El Beso", "Como una Mariposa"],
+        correct: 1
+      },
+      {
+        q: "¿En qué programa de TV se viralizó la cumbia villera masivamente?",
+        options: ["Gran Hermano", "Susana Giménez", "Showmatch", "Bailando por un Sueño"],
+        correct: 3
+      },
+      {
+        q: "¿Qué banda de cumbia romántica argentina es conocida por 'Miénteme'?",
+        options: ["Los Ángeles Azules", "Grupo Alegría", "Los Palmeras", "Ráfaga"],
+        correct: 1
+      },
+      {
+        q: "¿Qué frase viralizó el tema 'Flor de Piedra'?",
+        options: ["Soy de barrio", "Cumbia para el mundo", "Esto es fiesta", "Dale duro"],
+        correct: 0
+      },
+      {
+        q: "¿Cuál es el tema más conocido de Meta Guacha?",
+        options: ["La Vecina", "El Tío", "Cumbia del Sol", "Mueve Mueve"],
+        correct: 0
+      },
+      {
+        q: "¿Qué banda tiene como líder a 'El Tío'?",
+        options: ["Meta Guacha", "El Tío y su Banda", "Los Tíos", "El Tío Group"],
+        correct: 1
+      },
+      {
+        q: "¿Qué género musical argentino fue declarado patrimonio cultural?",
+        options: ["Tango", "Cumbia villera", "Rock nacional", "Cuarteto cordobés"],
+        correct: 1
+      },
+      {
+        q: "¿Qué cantante de cumbia es conocida como 'La Reina del Bailanto'?",
+        options: ["Gilda", "Soledad Pastorutti", "Mona Jiménez", "Lali Espósito"],
+        correct: 0
+      },
+      {
+        q: "¿Qué significa 'bailanto' en lunfardo cumbiero?",
+        options: ["Bailongo/fiesta", "Bailarín", "Bailar solo", "Baile lento"],
+        correct: 0
+      },
+      {
+        q: "¿Qué canción de Damas Gratis contiene la frase 'no me importa nada'?",
+        options: ["No Me Importa", "Pibes Chorros", "El Pibe", "Cumbia del Ruido"],
+        correct: 0
+      },
+      {
+        q: "¿Qué banda de cumbia es originaria de Rosario?",
+        options: ["Ráfaga", "Los Palmeras", "Los del Fuego", "Grupo Alegría"],
+        correct: 2
+      },
+      {
+        q: "¿Qué artista de cumbia argentina colaboró con Bizarrap?",
+        options: ["Damas Gratis", "La Mona Jiménez", "Nicki Nicole (cumbia session)", "Los Ángeles Azules"],
+        correct: 2
+      },
+      {
+        q: "¿Qué frase dice 'yo tengo la cumbia que te hace bailar'?",
+        options: ["Es de Pablo Lescano", "Es de Ráfaga", "Es de Los Palmeras", "Es de La Mona"],
+        correct: 0
+      },
+      {
+        q: "¿En qué barrio de Buenos Aires se gestó gran parte de la cumbia villera?",
+        options: ["Villa 31", "Flores", "San Telmo", "Villa Crespo"],
+        correct: 0
+      },
+      {
+        q: "¿Qué tema de cumbia se hizo viral en TikTok con el challenge del 'pasito'?",
+        options: ["El Bombón", "Pibe Callejero", "La Cumbia del Ruido", "Mueve la Cintura"],
+        correct: 2
+      },
+      {
+        q: "¿Qué banda de cumbia tiene un tema llamado 'Te voy a amar'?",
+        options: ["Los Palmeras", "Ráfaga", "Grupo Alegría", "Flor de Piedra"],
+        correct: 1
+      },
+      {
+        q: "¿Qué productor musical argentino revolucionó la cumbia con beats electrónicos?",
+        options: ["Bizarrap", "Tato Quiroz", "King Cumbia", "DJ Tao"],
+        correct: 2
+      },
+      {
+        q: "¿Qué canción de cumbia se considera el 'himno no oficial' de las fiestas argentinas?",
+        options: ["Muchachos", "El Bombón Asesino", "La Vida es un Carnaval", "Pibes Chorros"],
+        correct: 1
+      },
+      {
+        q: "¿Qué frase dice 'esto se prende con un poco de ruido'?",
+        options: ["Es de Un Poco de Ruido", "Es de Damas Gratis", "Es de Ráfaga", "Es de La Mona"],
+        correct: 0
+      },
+      {
+        q: "¿Cuál es el nombre del streaming musical argentino que inspira esta invitación?",
+        options: ["Un Poco de Ruido", "Cumbia Streaming", "Ruido Digital", "La Cumbia Online"],
+        correct: 0
+      }
+    ];
+
+    /* ═══════════════════════════════════════════════════════════
+       PLAYLIST DATA
+       ═══════════════════════════════════════════════════════════ */
+    const PLAYLIST = [
+      { song: "Pibe Callejero", artist: "Damas Gratis" },
+      { song: "El Bombón Asesino", artist: "Los Totora" },
+      { song: "Como la Flor", artist: "Gilda" },
+      { song: "Muchachos", artist: "La Mona Jiménez" },
+      { song: "Te Vas", artist: "Ráfaga" },
+      { song: "Corazón Valiente", artist: "Gilda" },
+      { song: "Miénteme", artist: "Grupo Alegría" },
+      { song: "La Vecina", artist: "Meta Guacha" },
+      { song: "Por Encima", artist: "Piola Vago" },
+      { song: "El Aguijón", artist: "Grupo Alegría" },
+      { song: "No Me Arrepiento", artist: "La Mona Jiménez" },
+      { song: "Te Quiero Para Mí", artist: "Ráfaga" }
+    ];
+
+    /* ═══════════════════════════════════════════════════════════
+       VARIABLES DE ESTADO
+       ═══════════════════════════════════════════════════════════ */
+    let triviaState = {
+      questions: [],
+      current: 0,
+      score: 0,
+      answered: false,
+      results: []
+    };
+
+    /* ═══════════════════════════════════════════════════════════
+       SISTEMA DE PARTÍCULAS
+       ═══════════════════════════════════════════════════════════ */
+    const particleCanvas = document.getElementById('particles-canvas');
+    const pCtx = particleCanvas.getContext('2d');
+    let particles = [];
+    let animFrame;
+
+    function resizeCanvas() {
+      particleCanvas.width = window.innerWidth;
+      particleCanvas.height = window.innerHeight;
+    }
+
+    class Particle {
+      constructor() {
+        this.reset();
+      }
+      reset() {
+        this.x = Math.random() * particleCanvas.width;
+        this.y = Math.random() * particleCanvas.height;
+        this.size = Math.random() * 2.5 + 0.5;
+        this.speedX = (Math.random() - 0.5) * 0.5;
+        this.speedY = (Math.random() - 0.5) * 0.5;
+        this.opacity = Math.random() * 0.5 + 0.1;
+        const colors = ['0,245,212', '255,0,255', '139,0,255', '0,102,255'];
+        this.color = colors[Math.floor(Math.random() * colors.length)];
+      }
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if (this.x < 0 || this.x > particleCanvas.width || this.y < 0 || this.y > particleCanvas.height) {
+          this.reset();
+        }
+      }
+      draw() {
+        pCtx.beginPath();
+        pCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        pCtx.fillStyle = `rgba(${this.color},${this.opacity})`;
+        pCtx.fill();
+      }
+    }
+
+    function initParticles(count = 80) {
+      particles = [];
+      for (let i = 0; i < count; i++) {
+        particles.push(new Particle());
+      }
+    }
+
+    function animateParticles() {
+      pCtx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
+      particles.forEach(p => { p.update(); p.draw(); });
+      animFrame = requestAnimationFrame(animateParticles);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       CONFETTI SYSTEM
+       ═══════════════════════════════════════════════════════════ */
+    const confettiCanvas = document.getElementById('confetti-canvas');
+    const cCtx = confettiCanvas.getContext('2d');
+    let confettiPieces = [];
+    let confettiRunning = false;
+
+    function resizeConfetti() {
+      confettiCanvas.width = window.innerWidth;
+      confettiCanvas.height = window.innerHeight;
+    }
+
+    class ConfettiPiece {
+      constructor() {
+        this.x = Math.random() * confettiCanvas.width;
+        this.y = -10;
+        this.size = Math.random() * 8 + 4;
+        this.speedY = Math.random() * 3 + 2;
+        this.speedX = (Math.random() - 0.5) * 2;
+        this.rotation = Math.random() * 360;
+        this.rotSpeed = (Math.random() - 0.5) * 10;
+        const colors = ['#ff00ff', '#00f5d4', '#8b00ff', '#0066ff', '#ffd700', '#ff2d95'];
+        this.color = colors[Math.floor(Math.random() * colors.length)];
+        this.opacity = 1;
+      }
+      update() {
+        this.y += this.speedY;
+        this.x += this.speedX;
+        this.rotation += this.rotSpeed;
+        this.opacity -= 0.003;
+      }
+      draw() {
+        cCtx.save();
+        cCtx.translate(this.x, this.y);
+        cCtx.rotate(this.rotation * Math.PI / 180);
+        cCtx.fillStyle = this.color;
+        cCtx.globalAlpha = Math.max(0, this.opacity);
+        cCtx.fillRect(-this.size/2, -this.size/2, this.size, this.size * 0.6);
+        cCtx.restore();
+      }
+    }
+
+    function launchConfetti(duration = 3000) {
+      confettiPieces = [];
+      confettiRunning = true;
+      const startTime = Date.now();
+      
+      function spawn() {
+        if (Date.now() - startTime < duration) {
+          for (let i = 0; i < 3; i++) confettiPieces.push(new ConfettiPiece());
+        }
+      }
+
+      function animate() {
+        if (!confettiRunning) return;
+        cCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+        spawn();
+        confettiPieces = confettiPieces.filter(c => c.opacity > 0);
+        confettiPieces.forEach(c => { c.update(); c.draw(); });
+        requestAnimationFrame(animate);
+      }
+      animate();
+      setTimeout(() => { confettiRunning = false; cCtx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height); }, duration + 2000);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       EQUALIZER EN PORTADA
+       ═══════════════════════════════════════════════════════════ */
+    function buildEqualizer() {
+      const eq = document.getElementById('coverEqualizer');
+      const barCount = 40;
+      const colors = ['#ff00ff', '#b44aff', '#8b00ff', '#0066ff', '#00d4ff', '#00f5d4', '#ff2d95'];
+
+      for (let i = 0; i < barCount; i++) {
+        const bar = document.createElement('div');
+        bar.className = 'eq-bar';
+        const h = Math.random() * 45 + 15;
+        bar.style.height = h + 'px';
+        bar.style.setProperty('--scale', (h / 55).toFixed(2));
+        bar.style.setProperty('--speed', (Math.random() * 0.6 + 0.3) + 's');
+        bar.style.background = colors[Math.floor(Math.random() * colors.length)];
+        bar.style.animationDelay = (Math.random() * 0.5) + 's';
+        eq.appendChild(bar);
+      }
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       AUDIO VISUALIZER
+       ═══════════════════════════════════════════════════════════ */
+    function buildAudioVisualizer() {
+      const vis = document.getElementById('audioVisualizer');
+      const count = 60;
+      for (let i = 0; i < count; i++) {
+        const bar = document.createElement('div');
+        bar.className = 'vis-bar';
+        bar.style.height = '2px';
+        vis.appendChild(bar);
+      }
+    }
+
+    function animateVisualizer() {
+      const bars = document.querySelectorAll('.vis-bar');
+      if (!bars.length) return;
+
+      function update() {
+        bars.forEach(bar => {
+          const h = Math.random() * 3 + 1;
+          bar.style.transform = `scaleY(${h})`;
+        });
+        requestAnimationFrame(update);
+      }
+      update();
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       FLASH EFFECT
+       ═══════════════════════════════════════════════════════════ */
+    function triggerFlash() {
+      const flash = document.getElementById('flashOverlay');
+      flash.classList.remove('active');
+      void flash.offsetWidth; // force reflow
+      flash.classList.add('active');
+    }
+
+    // Random flashes
+    setInterval(() => {
+      if (Math.random() > 0.7) triggerFlash();
+    }, 3000);
+
+    /* ═══════════════════════════════════════════════════════════
+       PORTADA - ENTRAR
+       ═══════════════════════════════════════════════════════════ */
+    document.getElementById('enterBtn').addEventListener('click', () => {
+      triggerFlash();
+      setTimeout(() => {
+        document.getElementById('coverScreen').classList.add('hidden');
+        document.getElementById('mainContent').classList.add('visible');
+        initScrollAnimations();
+        startCountdown();
+      }, 400);
+    });
+
+    /* ═══════════════════════════════════════════════════════════
+       COUNTDOWN
+       ═══════════════════════════════════════════════════════════ */
+    function startCountdown() {
+      // PLACEHOLDER: Cambiar fecha del evento
+      const eventDate = new Date('2026-08-15T22:00:00');
+
+      function update() {
+        const now = new Date();
+        const diff = eventDate - now;
+
+        if (diff <= 0) {
+          document.getElementById('cd-days').textContent = '00';
+          document.getElementById('cd-hours').textContent = '00';
+          document.getElementById('cd-minutes').textContent = '00';
+          document.getElementById('cd-seconds').textContent = '00';
+          return;
+        }
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        document.getElementById('cd-days').textContent = String(days).padStart(2, '0');
+        document.getElementById('cd-hours').textContent = String(hours).padStart(2, '0');
+        document.getElementById('cd-minutes').textContent = String(minutes).padStart(2, '0');
+        document.getElementById('cd-seconds').textContent = String(seconds).padStart(2, '0');
+      }
+
+      update();
+      setInterval(update, 1000);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       SCROLL ANIMATIONS
+       ═══════════════════════════════════════════════════════════ */
+    function initScrollAnimations() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+      document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       PLAYLIST RENDER
+       ═══════════════════════════════════════════════════════════ */
+    function renderPlaylist() {
+      const grid = document.getElementById('playlistGrid');
+      grid.innerHTML = '';
+
+      PLAYLIST.forEach((item, i) => {
+        const el = document.createElement('div');
+        el.className = 'playlist-item';
+        el.innerHTML = `
+          <!-- PLACEHOLDER: Imagen de portada para cada canción -->
+          <!-- <img src="assets/playlist-${i}.jpg" alt="" class="playlist-thumb"> -->
+          <div class="playlist-thumb">🎵</div>
+          <div class="playlist-info">
+            <div class="playlist-song">${item.song}</div>
+            <div class="playlist-artist">${item.artist}</div>
+          </div>
+          <div class="playlist-play">▶</div>
+        `;
+        el.addEventListener('click', () => {
+          document.querySelectorAll('.playlist-item').forEach(p => p.classList.remove('active'));
+          el.classList.add('active');
+        });
+        grid.appendChild(el);
+      });
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       RSVP FORM
+       ═══════════════════════════════════════════════════════════ */
+    document.getElementById('rsvpForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const success = document.getElementById('rsvpSuccess');
+
+      form.style.display = 'none';
+      success.classList.add('show');
+      launchConfetti(2000);
+    });
+
+    /* ═══════════════════════════════════════════════════════════
+       TRIVIA ENGINE
+       ═══════════════════════════════════════════════════════════ */
+    function shuffleArray(arr) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function startTrivia() {
+      // Seleccionar 5 preguntas aleatorias
+      triviaState.questions = shuffleArray(CUMBIA_TRIVIA).slice(0, 5);
+      triviaState.current = 0;
+      triviaState.score = 0;
+      triviaState.results = [];
+      triviaState.answered = false;
+
+      document.getElementById('triviaGame').style.display = 'block';
+      document.getElementById('triviaResults').classList.remove('show');
+
+      buildProgress();
+      showQuestion();
+    }
+
+    function buildProgress() {
+      const container = document.getElementById('triviaProgress');
+      container.innerHTML = '';
+      for (let i = 0; i < 5; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'trivia-dot';
+        if (i === 0) dot.classList.add('current');
+        container.appendChild(dot);
+      }
+    }
+
+    function updateProgress() {
+      const dots = document.querySelectorAll('.trivia-dot');
+      dots.forEach((dot, i) => {
+        dot.className = 'trivia-dot';
+        if (i < triviaState.current) {
+          dot.classList.add(triviaState.results[i] ? 'correct' : 'wrong');
+        } else if (i === triviaState.current) {
+          dot.classList.add('current');
+        }
+      });
+    }
+
+    function showQuestion() {
+      const q = triviaState.questions[triviaState.current];
+      triviaState.answered = false;
+
+      document.getElementById('triviaCounter').textContent =
+        `Pregunta ${triviaState.current + 1} de 5`;
+      document.getElementById('triviaScore').textContent =
+        `Puntos: ${triviaState.score}`;
+      document.getElementById('triviaQuestion').textContent = q.q;
+      document.getElementById('triviaNextBtn').classList.remove('show');
+
+      const optionsContainer = document.getElementById('triviaOptions');
+      optionsContainer.innerHTML = '';
+
+      q.options.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'trivia-option';
+        btn.textContent = opt;
+        btn.addEventListener('click', () => handleAnswer(i, btn));
+        optionsContainer.appendChild(btn);
+      });
+
+      updateProgress();
+    }
+
+    function handleAnswer(selected, btnEl) {
+      if (triviaState.answered) return;
+      triviaState.answered = true;
+
+      const q = triviaState.questions[triviaState.current];
+      const options = document.querySelectorAll('.trivia-option');
+
+      // Mark all disabled
+      options.forEach(o => o.classList.add('disabled'));
+
+      if (selected === q.correct) {
+        btnEl.classList.add('correct');
+        triviaState.score++;
+        triviaState.results.push(true);
+      } else {
+        btnEl.classList.add('wrong');
+        options[q.correct].classList.add('correct');
+        triviaState.results.push(false);
+      }
+
+      document.getElementById('triviaScore').textContent =
+        `Puntos: ${triviaState.score}`;
+
+      // Show next button or results
+      setTimeout(() => {
+        if (triviaState.current < 4) {
+          document.getElementById('triviaNextBtn').classList.add('show');
+        } else {
+          showResults();
+        }
+      }, 1200);
+    }
+
+    document.getElementById('triviaNextBtn').addEventListener('click', () => {
+      triviaState.current++;
+      showQuestion();
+    });
+
+    function showResults() {
+      document.getElementById('triviaGame').style.display = 'none';
+      const results = document.getElementById('triviaResults');
+      results.classList.add('show');
+
+      document.getElementById('resultsScore').textContent =
+        `${triviaState.score}/5`;
+
+      let msg = '';
+      if (triviaState.score === 5) msg = '🔥 ¡¡ERES UN GENIO DE LA CUMBIA!! ¡Perfecto!';
+      else if (triviaState.score >= 4) msg = '🎵 ¡Casi perfecto! Sabés mucho de cumbia.';
+      else if (triviaState.score >= 3) msg = '🎶 ¡Nada mal! Tenés buen oído cumbiero.';
+      else if (triviaState.score >= 2) msg = '📻 Regular, pero se nota que escuchás algo.';
+      else msg = '💿 Te falta bailar más cumbia, papá!';
+
+      document.getElementById('resultsMessage').textContent = msg;
+
+      if (triviaState.score >= 4) {
+        launchConfetti(4000);
+      }
+    }
+
+    document.getElementById('triviaReplayBtn').addEventListener('click', startTrivia);
+
+    /* ═══════════════════════════════════════════════════════════
+       MUSIC TOGGLE
+       ═══════════════════════════════════════════════════════════ */
+    let isPlaying = false;
+    const musicToggle = document.getElementById('musicToggle');
+
+    musicToggle.addEventListener('click', () => {
+      isPlaying = !isPlaying;
+      musicToggle.textContent = isPlaying ? '🔊' : '🔇';
+      musicToggle.classList.toggle('playing', isPlaying);
+
+      // PLACEHOLDER: Descomentar cuando tengas el audio
+      // const audio = document.getElementById('bgMusic');
+      // if (isPlaying) audio.play(); else audio.pause();
+    });
+
+    /* ═══════════════════════════════════════════════════════════
+       INIT
+       ═══════════════════════════════════════════════════════════ */
+    function init() {
+      resizeCanvas();
+      resizeConfetti();
+      initParticles(80);
+      animateParticles();
+      buildEqualizer();
+      buildAudioVisualizer();
+      animateVisualizer();
+      renderPlaylist();
+      startTrivia();
+
+      window.addEventListener('resize', () => {
+        resizeCanvas();
+        resizeConfetti();
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+
+</body>
+</html>
