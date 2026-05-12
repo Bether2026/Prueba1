@@ -93,7 +93,7 @@
     }
 
     /* ═══════════════════════════════════════════
-       LLUVIA DE JARRAS
+       LLUVIA DE JARRAS - CON IMAGEN REAL
        ═══════════════════════════════════════════ */
     #jarra-rain-container {
       position: fixed;
@@ -107,11 +107,19 @@
     .jarra-drop {
       position: absolute;
       top: -80px;
-      font-size: 28px;
+      width: 40px;
+      height: 40px;
       opacity: 0.15;
       animation: jarraFall linear infinite;
       will-change: transform;
       user-select: none;
+    }
+
+    .jarra-drop img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      pointer-events: none;
     }
 
     @keyframes jarraFall {
@@ -197,7 +205,7 @@
       padding: 20px;
     }
 
-    /* Logo jarra en portada */
+    /* Logo jarra en portada - CON IMAGEN */
     .cover-logo {
       width: 140px; height: 140px;
       margin: 0 auto 25px;
@@ -208,9 +216,15 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 60px;
       background: radial-gradient(circle, #1a1a3e, #0a0a2a);
       position: relative;
+      overflow: hidden;
+    }
+
+    .cover-logo img {
+      width: 90%;
+      height: 90%;
+      object-fit: contain;
     }
 
     .cover-logo::after {
@@ -388,7 +402,7 @@
     }
 
     /* ═══════════════════════════════════════════
-       HERO
+       HERO - CON IMAGEN
        ═══════════════════════════════════════════ */
     .hero {
       min-height: 100vh;
@@ -414,9 +428,15 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 55px;
       box-shadow: 0 0 30px rgba(255,215,0,0.3);
       animation: heroFloat 6s ease-in-out infinite;
+      overflow: hidden;
+    }
+
+    .hero-image-placeholder img {
+      width: 85%;
+      height: 85%;
+      object-fit: contain;
     }
 
     @keyframes heroFloat {
@@ -840,7 +860,20 @@
       font-size: 0.85rem;
     }
 
-    footer .jarra-footer { font-size: 30px; display: block; margin-bottom: 10px; }
+    .jarra-footer {
+      width: 50px;
+      height: 50px;
+      margin: 0 auto 10px;
+      display: block;
+    }
+
+    .jarra-footer img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      opacity: 0.6;
+    }
+
     footer span.highlight { color: var(--yellow-jarra); text-shadow: var(--glow-yellow); }
 
     /* ═══════════════════════════════════════════
@@ -889,7 +922,7 @@
 </head>
 <body>
 
-  <!-- LLUVIA DE JARRAS -->
+  <!-- LLUVIA DE JARRAS CON IMAGEN -->
   <div id="jarra-rain-container" aria-hidden="true"></div>
 
   <!-- PARTÍCULAS -->
@@ -906,18 +939,20 @@
     <div class="flash-overlay" id="flashOverlay"></div>
 
     <div class="cover-content">
-      <div class="cover-logo" aria-label="Logo Un Poco de Ruido"></div>
+      <div class="cover-logo" aria-label="Logo Un Poco de Ruido">
+        <img src="Jarra.png" alt="Jarra Un Poco de Ruido">
+      </div>
 
       <h1 class="cover-title">
         <span class="word-un">UN</span><br>
         <span class="word-poco">POCO</span><br>
         <span class="word-de-ruido">DE RUIDO</span>
       </h1>
-      <p class="cover-subtitle"> La Invitación Oficial 🪣</p>
+      <p class="cover-subtitle"> La Invitación Oficial</p>
 
       <div class="equalizer" id="coverEqualizer" aria-hidden="true"></div>
 
-      <button class="cover-enter-btn" id="enterBtn">🪣 Entrar a la Fiesta</button>
+      <button class="cover-enter-btn" id="enterBtn">Entrar a la Fiesta</button>
     </div>
   </div>
 
@@ -928,7 +963,9 @@
 
     <!-- HERO -->
     <section class="hero" id="heroSection">
-      <div class="hero-image-placeholder" aria-label="Evento">🪣</div>
+      <div class="hero-image-placeholder" aria-label="Evento">
+        <img src="Jarra.png" alt="Un Poco de Ruido">
+      </div>
 
       <h2 class="hero-name text-gradient">Un Poco de Ruido</h2>
       <p class="hero-date text-neon-cyan">📅 Sábado 15 de Agosto, 2026</p>
@@ -942,7 +979,7 @@
 
     <!-- COUNTDOWN -->
     <section id="countdownSection" class="animate-on-scroll">
-      <h3 class="section-title text-gradient">🪣 Countdown 🪣</h3>
+      <h3 class="section-title text-gradient">Countdown</h3>
       <div class="section-divider"></div>
 
       <div class="countdown-grid">
@@ -967,7 +1004,7 @@
 
     <!-- LOCATION -->
     <section id="locationSection" class="animate-on-scroll">
-      <h3 class="section-title text-gradient"> Ubicación 🪣</h3>
+      <h3 class="section-title text-gradient"> Ubicación</h3>
       <div class="section-divider"></div>
 
       <div class="glass-card">
@@ -993,7 +1030,7 @@
 
     <!-- RSVP -->
     <section id="rsvpSection" class="animate-on-scroll">
-      <h3 class="section-title text-gradient"> Confirmá tu Asistencia 🪣</h3>
+      <h3 class="section-title text-gradient"> Confirmá tu Asistencia</h3>
       <div class="section-divider"></div>
 
       <div class="glass-card">
@@ -1017,11 +1054,11 @@
           <div class="form-group">
             <textarea rows="2" placeholder="💬 Mensaje opcional..."></textarea>
           </div>
-          <button type="submit" class="btn-submit">🪣 ¡Confirmar Asistencia!</button>
+          <button type="submit" class="btn-submit">¡Confirmar Asistencia!</button>
         </form>
 
         <div class="rsvp-success" id="rsvpSuccess">
-          <span class="check-icon">🪣✅</span>
+          <span class="check-icon">✅</span>
           <h4 style="font-size:1.3rem; margin-bottom:10px; color:var(--yellow-jarra);">¡Estás adentro!</h4>
           <p style="color:var(--color-gray);">Agarrá tu jarra y vení. ¡Te confirmamos por WhatsApp!</p>
         </div>
@@ -1030,7 +1067,7 @@
 
     <!-- TRIVIA -->
     <section id="triviaSection" class="animate-on-scroll trivia-section">
-      <h3 class="section-title text-gradient">🪣 Trivia Cumbiera 🪣</h3>
+      <h3 class="section-title text-gradient"> Trivia Cumbiera</h3>
       <div class="section-divider"></div>
 
       <div class="trivia-card" id="triviaCard">
@@ -1045,16 +1082,18 @@
         </div>
 
         <div class="trivia-results" id="triviaResults">
-          <div style="font-size:55px;">🪣🏆🪣</div>
+          <div style="font-size:55px;">🏆</div>
           <div class="results-score text-gradient" id="resultsScore">0/5</div>
           <p class="results-message" id="resultsMessage">¡Buen intento!</p>
-          <button class="trivia-replay-btn" id="triviaReplayBtn">🪣 Jugar de Nuevo</button>
+          <button class="trivia-replay-btn" id="triviaReplayBtn">Jugar de Nuevo</button>
         </div>
       </div>
     </section>
 
     <footer>
-      <span class="jarra-footer"></span>
+      <div class="jarra-footer">
+        <img src="Jarra.png" alt="Jarra">
+      </div>
       <p>Hecho con 💛 y mucho <span class="highlight">ruido</span></p>
       <p style="margin-top:8px;">© 2026 — Un Poco de Ruido</p>
     </footer>
@@ -1242,21 +1281,29 @@
     }
 
     /* ══════════════════════════════════════════
-       LLUVIA DE JARRAS
+       LLUVIA DE JARRAS CON IMAGEN REAL
        ══════════════════════════════════════════ */
     function createJarraRain() {
       const container = document.getElementById('jarra-rain-container');
-      const jarraCount = 25;
+      const jarraCount = 20;
 
       for (let i = 0; i < jarraCount; i++) {
         const jarra = document.createElement('div');
         jarra.className = 'jarra-drop';
-        jarra.textContent = '🪣';
+        
+        // Crear elemento de imagen
+        const img = document.createElement('img');
+        img.src = 'Jarra.png';
+        img.alt = 'Jarra';
+        
+        jarra.appendChild(img);
         jarra.style.left = Math.random() * 100 + '%';
-        jarra.style.fontSize = (Math.random() * 20 + 14) + 'px';
+        jarra.style.width = (Math.random() * 25 + 20) + 'px';
+        jarra.style.height = jarra.style.width;
         jarra.style.animationDuration = (Math.random() * 6 + 6) + 's';
         jarra.style.animationDelay = (Math.random() * 10) + 's';
         jarra.style.opacity = Math.random() * 0.12 + 0.03;
+        
         container.appendChild(jarra);
       }
     }
@@ -1479,11 +1526,11 @@
       document.getElementById('resultsScore').textContent = `${triviaState.score}/5`;
 
       let msg = '';
-      if (triviaState.score === 5) msg = '🪣 ¡¡PERFECTO!! ¡Sos un genio de la cumbia!';
-      else if (triviaState.score >= 4) msg = '🪣 ¡Casi perfecto! Sabés mucho de cumbia.';
-      else if (triviaState.score >= 3) msg = '🪣 ¡Nada mal! Tenés buen oído cumbiero.';
+      if (triviaState.score === 5) msg = '¡¡PERFECTO!! ¡Sos un genio de la cumbia!';
+      else if (triviaState.score >= 4) msg = '¡Casi perfecto! Sabés mucho de cumbia.';
+      else if (triviaState.score >= 3) msg = '¡Nada mal! Tenés buen oído cumbiero.';
       else if (triviaState.score >= 2) msg = ' Regular, pero se nota que escuchás algo.';
-      else msg = '🪣 ¡Agarrá tu jarra y ponete a escuchar cumbia, papá!';
+      else msg = '¡Agarrá tu jarra y ponete a escuchar cumbia, papá!';
 
       document.getElementById('resultsMessage').textContent = msg;
 
