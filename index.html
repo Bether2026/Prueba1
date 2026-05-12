@@ -50,7 +50,7 @@
 
     body {
       font-family: var(--font-main);
-      background: var(--color-bg);
+      background: linear-gradient(180deg, #0a0a1a 0%, #050510 50%, #020208 100%);
       color: var(--white-jarra);
       overflow-x: hidden;
       line-height: 1.6;
@@ -93,7 +93,7 @@
     }
 
     /* ═══════════════════════════════════════════
-       LLUVIA DE JARRAS - CON IMAGEN REAL
+       LLUVIA DE JARRAS - MINIATURAS
        ═══════════════════════════════════════════ */
     #jarra-rain-container {
       position: fixed;
@@ -106,13 +106,14 @@
 
     .jarra-drop {
       position: absolute;
-      top: -80px;
-      width: 40px;
-      height: 40px;
-      opacity: 0.15;
+      top: -40px;
+      width: 30px;
+      height: 30px;
+      opacity: 0.25;
       animation: jarraFall linear infinite;
       will-change: transform;
       user-select: none;
+      filter: drop-shadow(0 0 3px rgba(255,215,0,0.3));
     }
 
     .jarra-drop img {
@@ -123,14 +124,14 @@
     }
 
     @keyframes jarraFall {
-      0% { transform: translateY(-80px) rotate(0deg); opacity: 0; }
-      10% { opacity: 0.15; }
-      90% { opacity: 0.12; }
-      100% { transform: translateY(calc(100vh + 80px)) rotate(360deg); opacity: 0; }
+      0% { transform: translateY(-40px) rotate(0deg); opacity: 0; }
+      10% { opacity: 0.25; }
+      90% { opacity: 0.20; }
+      100% { transform: translateY(calc(100vh + 40px)) rotate(360deg); opacity: 0; }
     }
 
     /* ═══════════════════════════════════════════
-       CANVAS PARTÍCULAS
+       CANVAS PARTÍCULAS - ESTRELLAS NOCTURNAS
        ═══════════════════════════════════════════ */
     #particles-canvas {
       position: fixed;
@@ -152,7 +153,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background: var(--color-bg);
+      background: linear-gradient(180deg, #0a0a1a 0%, #050510 100%);
       overflow: hidden;
       transition: opacity 0.8s ease, transform 0.8s ease;
     }
@@ -168,9 +169,9 @@
       top: 0; left: 0;
       width: 100%; height: 100%;
       background:
-        radial-gradient(ellipse at 30% 40%, rgba(255,215,0,0.12) 0%, transparent 50%),
-        radial-gradient(ellipse at 70% 60%, rgba(0,85,255,0.12) 0%, transparent 50%),
-        radial-gradient(ellipse at 50% 80%, rgba(255,102,0,0.08) 0%, transparent 50%);
+        radial-gradient(ellipse at 30% 40%, rgba(255,215,0,0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 60%, rgba(0,85,255,0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 80%, rgba(255,102,0,0.05) 0%, transparent 50%);
       animation: bgPulse 4s ease-in-out infinite alternate;
     }
 
@@ -205,7 +206,7 @@
       padding: 20px;
     }
 
-    /* Logo jarra en portada - CON IMAGEN */
+    /* Logo jarra en portada */
     .cover-logo {
       width: 140px; height: 140px;
       margin: 0 auto 25px;
@@ -402,7 +403,7 @@
     }
 
     /* ═══════════════════════════════════════════
-       HERO - CON IMAGEN
+       HERO
        ═══════════════════════════════════════════ */
     .hero {
       min-height: 100vh;
@@ -925,7 +926,7 @@
   <!-- LLUVIA DE JARRAS CON IMAGEN -->
   <div id="jarra-rain-container" aria-hidden="true"></div>
 
-  <!-- PARTÍCULAS -->
+  <!-- PARTÍCULAS (ESTRELLAS) -->
   <canvas id="particles-canvas"></canvas>
 
   <!-- CONFETTI -->
@@ -1169,7 +1170,7 @@
     };
 
     /* ═══════════════════════════════════════════
-       PARTÍCULAS
+       PARTÍCULAS - ESTRELLAS NOCTURNAS
        ══════════════════════════════════════════ */
     const particleCanvas = document.getElementById('particles-canvas');
     const pCtx = particleCanvas.getContext('2d');
@@ -1185,27 +1186,39 @@
       reset() {
         this.x = Math.random() * particleCanvas.width;
         this.y = Math.random() * particleCanvas.height;
-        this.size = Math.random() * 2 + 0.5;
-        this.speedX = (Math.random() - 0.5) * 0.4;
-        this.speedY = (Math.random() - 0.5) * 0.4;
-        this.opacity = Math.random() * 0.4 + 0.1;
-        const colors = ['255,215,0', '0,85,255', '255,102,0', '0,204,255'];
+        this.size = Math.random() * 1.5 + 0.5;
+        this.speedX = (Math.random() - 0.5) * 0.1;
+        this.speedY = (Math.random() - 0.5) * 0.1;
+        this.opacity = Math.random() * 0.8 + 0.2;
+        this.twinkleSpeed = Math.random() * 0.02 + 0.005;
+        this.twinklePhase = Math.random() * Math.PI * 2;
+        const colors = ['255,255,255', '255,215,0', '0,204,255', '255,102,0'];
         this.color = colors[Math.floor(Math.random() * colors.length)];
       }
       update() {
         this.x += this.speedX;
         this.y += this.speedY;
+        this.twinklePhase += this.twinkleSpeed;
         if (this.x < 0 || this.x > particleCanvas.width || this.y < 0 || this.y > particleCanvas.height) this.reset();
       }
       draw() {
+        const twinkle = Math.sin(this.twinklePhase) * 0.3 + 0.7;
         pCtx.beginPath();
         pCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        pCtx.fillStyle = `rgba(${this.color},${this.opacity})`;
+        pCtx.fillStyle = `rgba(${this.color},${this.opacity * twinkle})`;
         pCtx.fill();
+        
+        // Glow effect for larger stars
+        if (this.size > 1.5) {
+          pCtx.beginPath();
+          pCtx.arc(this.x, this.y, this.size * 2, 0, Math.PI * 2);
+          pCtx.fillStyle = `rgba(${this.color},${this.opacity * twinkle * 0.2})`;
+          pCtx.fill();
+        }
       }
     }
 
-    function initParticles(count = 60) {
+    function initParticles(count = 100) {
       particles = [];
       for (let i = 0; i < count; i++) particles.push(new Particle());
     }
@@ -1281,28 +1294,27 @@
     }
 
     /* ══════════════════════════════════════════
-       LLUVIA DE JARRAS CON IMAGEN REAL
+       LLUVIA DE JARRAS - MINIATURAS
        ══════════════════════════════════════════ */
     function createJarraRain() {
       const container = document.getElementById('jarra-rain-container');
-      const jarraCount = 20;
+      const jarraCount = 30;
 
       for (let i = 0; i < jarraCount; i++) {
         const jarra = document.createElement('div');
         jarra.className = 'jarra-drop';
         
-        // Crear elemento de imagen
         const img = document.createElement('img');
         img.src = 'Jarra.png';
         img.alt = 'Jarra';
         
         jarra.appendChild(img);
         jarra.style.left = Math.random() * 100 + '%';
-        jarra.style.width = (Math.random() * 25 + 20) + 'px';
+        jarra.style.width = (Math.random() * 15 + 20) + 'px'; // 20-35px miniaturas
         jarra.style.height = jarra.style.width;
-        jarra.style.animationDuration = (Math.random() * 6 + 6) + 's';
+        jarra.style.animationDuration = (Math.random() * 5 + 7) + 's';
         jarra.style.animationDelay = (Math.random() * 10) + 's';
-        jarra.style.opacity = Math.random() * 0.12 + 0.03;
+        jarra.style.opacity = Math.random() * 0.15 + 0.1;
         
         container.appendChild(jarra);
       }
@@ -1358,7 +1370,6 @@
        COUNTDOWN
        ═══════════════════════════════════════════ */
     function startCountdown() {
-      // PLACEHOLDER: Cambiar fecha del evento
       const eventDate = new Date('2026-08-15T22:00:00');
 
       function update() {
@@ -1545,7 +1556,7 @@
     function init() {
       resizeCanvas();
       resizeConfetti();
-      initParticles(60);
+      initParticles(100);
       animateParticles();
       buildEqualizer();
       createJarraRain();
